@@ -1,1 +1,1 @@
-# coding-project-template
+# e-plantShopping A self-service, online marketplace for professional greenhouse growers. Place, track, and edit your orders 24/7. Stop clawing through 100’s of catalogs, making multiple phone calls, and downloading spreadsheets. Access all the information you need with a few clicks.
