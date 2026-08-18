@@ -7,12 +7,10 @@ function CartItem({ onContinueShopping }) {
     const cartItems = useSelector(state => state.cart.items);
     const dispatch = useDispatch();
 
-    // Since cost is stored as a string like "$15", strip the "$" and parse it as a number
-    const parseCost = (cost) => parseFloat(cost.replace('$', ''));
-
+    // Calculate total amount for all items in the cart
     const calculateTotalAmount = () => {
         return cartItems.reduce((total, item) => {
-            return total + parseCost(item.cost) * item.quantity;
+            return total + parseFloat(item.cost.substring(1)) * item.quantity;
         }, 0).toFixed(2);
     };
 
@@ -20,8 +18,18 @@ function CartItem({ onContinueShopping }) {
         return cartItems.reduce((total, item) => total + item.quantity, 0);
     };
 
-    const calculateItemSubtotal = (item) => {
-        return (parseCost(item.cost) * item.quantity).toFixed(2);
+    // Calculate subtotal for a single plant type
+    const calculateTotalCost = (item) => {
+        return (parseFloat(item.cost.substring(1)) * item.quantity).toFixed(2);
+    };
+
+    const handleContinueShopping = (e) => {
+        e.preventDefault();
+        onContinueShopping(e);
+    };
+
+    const handleCheckoutShopping = (e) => {
+        alert('Functionality to be added for future reference');
     };
 
     const handleIncrement = (item) => {
@@ -38,15 +46,6 @@ function CartItem({ onContinueShopping }) {
 
     const handleRemove = (item) => {
         dispatch(removeItem(item.name));
-    };
-
-    const handleContinueShopping = (e) => {
-        e.preventDefault();
-        onContinueShopping();
-    };
-
-    const handleCheckoutShopping = (e) => {
-        alert('Functionality to be added for future reference');
     };
 
     return (
@@ -75,7 +74,7 @@ function CartItem({ onContinueShopping }) {
                                 </button>
                             </div>
                             <div className="cart-item-subtotal">
-                                Subtotal: ${calculateItemSubtotal(item)}
+                                Total: ${calculateTotalCost(item)}
                             </div>
                             <button
                                 className="cart-item-delete"
@@ -90,7 +89,7 @@ function CartItem({ onContinueShopping }) {
             {cartItems.length === 0 && (
                 <p style={{ textAlign: 'center' }}>Your cart is empty.</p>
             )}
-            <div style={{ marginTop: '20px' }}>
+            <div style={{ marginTop: '20px', color: 'black' }}>
                 <h3>Total Items: {calculateTotalItems()}</h3>
             </div>
             <div className="continue_shopping_btn">
